@@ -1,24 +1,37 @@
-import * as Joi from '@hapi/joi';
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DatabaseModule } from './database/database.module';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { AuthorisationModule } from './authorisation/authorisation.module';
 import { UsersModule } from './users/users.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { configValidationSchema } from './app.schemas';
 
 @Module({
-  imports: [ConfigModule.forRoot({
-    validationSchema: Joi.object({
-      DB_HOST: Joi.string().required(),
-      DB_PORT: Joi.number().required(),
-      DB_USERNAME: Joi.string().required(),
-      DB_PASSWORD: Joi.string().required(),
-      DB_DATABASE: Joi.string().required(),
-      PORT: Joi.number().required(),
-    })
-  }), DatabaseModule, AuthenticationModule, AuthorisationModule, UsersModule],
+  imports: [
+    ConfigModule.forRoot({
+      envFilePath: [`stage.${process.env.STAGE}.env`],
+      validationSchema: configValidationSchema,
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule, DatabaseModule, AuthenticationModule, AuthorisationModule, UsersModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => {
+        return {
+          type: 'postgres',
+          host: configService.get('DB_HOST'),
+          port: configService.get('DB_PORT'),
+          username: configService.get('DB_USERNAME'),
+          password: configService.get('DB_PASSWORD'),
+          database: configService.get('DB_DATABASE'),
+          autoLoadEntities: true,
+          synchronize: true,
+        };
+      },
+    }),
+  ],
   controllers: [AppController],
   providers: [AppService],
 })
