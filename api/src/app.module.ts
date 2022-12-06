@@ -2,9 +2,6 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { DatabaseModule } from './database/database.module';
-import { AuthenticationModule } from './authentication/authentication.module';
-import { AuthorisationModule } from './authorisation/authorisation.module';
 import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { configValidationSchema } from './app.schemas';
@@ -16,7 +13,7 @@ import { configValidationSchema } from './app.schemas';
       validationSchema: configValidationSchema,
     }),
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule, DatabaseModule, AuthenticationModule, AuthorisationModule, UsersModule],
+      imports: [ConfigModule, UsersModule],
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => {
         return {
