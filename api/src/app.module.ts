@@ -5,6 +5,7 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { configValidationSchema } from './app.schemas';
+import { AuthenticationModule } from './authentication/authentication.module';
 
 @Module({
   imports: [
@@ -13,7 +14,7 @@ import { configValidationSchema } from './app.schemas';
       validationSchema: configValidationSchema,
     }),
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule, UsersModule],
+      imports: [ConfigModule, UsersModule, AuthenticationModule],
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => {
         return {
