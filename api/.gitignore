@@ -1,5 +1,5 @@
 # env
-api/stage.dev.env
+stage.dev.env
 
 # compiled output
 /dist
