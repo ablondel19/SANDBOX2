@@ -5,6 +5,7 @@ import { UsersModule } from 'src/users/users.module';
 import { PassportModule } from '@nestjs/passport';
 import { LocalStrategy } from './local.strategy';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { SessionSerializer } from './serializer';
 
 @Module({
   imports: [
@@ -14,7 +15,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       envFilePath: [`stage.${process.env.STAGE}.env`],
     }),
   ],
-  providers: [AuthenticationService, LocalStrategy],
+  providers: [AuthenticationService, LocalStrategy, SessionSerializer],
   exports: [AuthenticationService],
   controllers: [AuthenticationController],
 })

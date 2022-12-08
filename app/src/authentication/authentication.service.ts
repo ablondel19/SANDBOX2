@@ -17,8 +17,7 @@ export class AuthenticationService {
   }
 
   async login(user: any) {
-    console.log('hello');
-    const payload = { username: user.username, sub: user.userId };
-    return payload;
+    console.log('login() in auth service');
+    return user;
   }
 }

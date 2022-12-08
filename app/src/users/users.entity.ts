@@ -3,10 +3,10 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()
-  userId: number;
+  id: number;
 
   @Column()
-  username: string;
+  login: string;
 
   @Column()
   email: string;
@@ -16,4 +16,9 @@ export class User {
 
   @Column({ default: false })
   isActive: boolean;
+}
+
+export type UserDetails = {
+  login: string;
+  email: string;
 }
