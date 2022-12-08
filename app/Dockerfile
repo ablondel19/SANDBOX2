@@ -8,7 +8,7 @@ COPY ["package.json", "package-lock.json", "./"]
 #DEV#################################################
 FROM base AS dev
 ENV	NODE_ENV=development
-RUN npm ci
+RUN npm install
 COPY . .
 CMD ["npm", "run", "start:dev"]
 
