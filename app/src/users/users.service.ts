@@ -11,15 +11,19 @@ export class UsersService {
     const U: User = new User();
     U.login = 'ablondel';
     U.password = 'D4.dhuj319.ipr';
-    U.email = 'yoyo@yeye.com';
+    U.email = 'ablondel@student.s19.be';
     this.userRepository.save(U);
   }
 
-	async findOne(login: string) {
-		return this.userRepository.findOneBy({ login });
+	async findOne(login: string): Promise<any> {
+		return this.userRepository.findOneBy({ login })
 	}
 
   displayAll() {
     return this.userRepository.find();
+  }
+
+  clear() {
+    return this.userRepository.clear();
   }
 }

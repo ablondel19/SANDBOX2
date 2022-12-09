@@ -9,8 +9,7 @@ export class LocalAuthGuard extends AuthGuard('oauth2') {
     const activate = (await super.canActivate(context)) as boolean;
     const request = context.switchToHttp().getRequest();
 	const { id, login, email, isActive } = request['user'];
-	console.log('---------------------------------------------------------------------');
-	console.log(id, login, email, isActive);
+	//console.log(id, login, email, isActive);
     await super.logIn(request);
     return activate;
   }

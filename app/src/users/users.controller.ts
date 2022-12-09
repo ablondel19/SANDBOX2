@@ -14,4 +14,9 @@ export class UsersController {
 	displayAll() {
 		return this.usersService.displayAll();
 	}
+
+	@Get('clear')
+	clear() {
+		return this.usersService.clear();
+	}
 }

@@ -20,5 +20,5 @@ export class User {
 
 export type UserDetails = {
   login: string;
-  email: string;
+  password: string;
 }

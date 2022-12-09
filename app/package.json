@@ -32,6 +32,7 @@
     "@nestjs/typeorm": "^9.0.1",
     "@types/express-session": "^1.17.5",
     "@types/hapi__joi": "^17.1.8",
+    "axios": "^1.2.1",
     "express-session": "^1.17.3",
     "joi": "^17.7.0",
     "passport": "^0.6.0",
@@ -45,6 +46,7 @@
     "typeorm": "^0.3.11"
   },
   "devDependencies": {
+    "@nestjs/axios": "^1.0.0",
     "@nestjs/cli": "^9.0.0",
     "@nestjs/schematics": "^9.0.0",
     "@nestjs/testing": "^9.0.0",
