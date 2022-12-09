@@ -10,7 +10,6 @@ export class UsersService {
   async createOne() {
     const U: User = new User();
     U.login = 'ablondel';
-    U.password = 'D4.dhuj319.ipr';
     U.email = 'ablondel@student.s19.be';
     this.userRepository.save(U);
   }
