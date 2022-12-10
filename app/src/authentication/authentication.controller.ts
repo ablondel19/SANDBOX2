@@ -1,4 +1,13 @@
-import { Body, Controller, ExecutionContext, Get, Post, Req, Res, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  ExecutionContext,
+  Get,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { Request } from 'express';
 import { LocalAuthGuard } from './authentication.guard';
 import { AuthenticationService } from './authentication.service';
@@ -7,18 +16,17 @@ import { AuthenticationService } from './authentication.service';
 export class AuthenticationController {
   constructor(private authService: AuthenticationService) {}
 
-  @Get('login')
+  @Get()
   @UseGuards(LocalAuthGuard)
-  login(@Req() req: Request) {
-    console.log('-----GET app/auth/login');
-    return this.authService.login(req.user);
+  auth() {
+    return;
   }
 
   @Get('redirect')
   @UseGuards(LocalAuthGuard)
   redirect(@Req() req: Request) {
     console.log('-----GET app/auth/redirect');
-    return this.authService.login(req.user);
+    return this.authService.provideCredentials(req.user);
   }
 
   @Get('status')

@@ -5,28 +5,21 @@ import { LocalStrategy } from './local.strategy';
 
 @Injectable()
 export class AuthenticationService {
-  constructor(
-    private usersService: UsersService,
-  ) {}
+  constructor(private usersService: UsersService) {}
 
   async validateUser(username: string, email: string): Promise<any> {
     console.log('-----validatetUser');
     const user = await this.usersService.findOne(username);
     if (user && user.email === email) {
-      const { password, ...result } = user;
-      console.log('Hey there!');
-      return result;
+      console.log('User validated');
+      return user;
     }
     return null;
   }
 
-  login(user: any) {
-    console.log('login() in auth service');
+  provideCredentials(user: any) {
+    console.log('-----login');
     console.log(user);
-    return user;
-  }
-
-  redirect() {
-    return 'redirected';
+    return 'Form => choose pseudo + password. + upload avatar';
   }
 }

@@ -5,13 +5,13 @@ export class User {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ nullable: true })
   login: string;
 
-  @Column()
+  @Column({ nullable: true })
   email: string;
 
-  @Column()
+  @Column({ nullable: true })
   password: string;
 
   @Column({ default: false })
@@ -21,4 +21,4 @@ export class User {
 export type UserDetails = {
   login: string;
   password: string;
-}
+};
