@@ -9,12 +9,12 @@ export class SessionSerializer extends PassportSerializer {
   }
 
   serializeUser(user: any, done: Function) {
-	console.log('-----serializeUser');
+	//console.log('-----serializeUser');
     done(null, user);
   }
 
   deserializeUser(payload: any, done: Function) {
-	console.log('-----deserializeUser');
+	//console.log('-----deserializeUser');
     const found = this.userService.findOne(payload.login);
     if (found === null) {
       done(null, null);

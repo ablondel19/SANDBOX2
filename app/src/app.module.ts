@@ -9,12 +9,15 @@ import { AuthenticationModule } from './authentication/authentication.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      envFilePath: [`stage.${process.env.STAGE}.env`],
-      validationSchema: configValidationSchema,
-    }),
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule, UsersModule, AuthenticationModule],
+      imports: [
+        ConfigModule.forRoot({
+          envFilePath: [`stage.${process.env.STAGE}.env`],
+          validationSchema: configValidationSchema,
+        }),
+        UsersModule,
+        AuthenticationModule,
+      ],
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => {
         return {

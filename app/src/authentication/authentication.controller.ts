@@ -1,11 +1,7 @@
 import {
-  Body,
   Controller,
-  ExecutionContext,
   Get,
-  Post,
   Req,
-  Res,
   UseGuards,
 } from '@nestjs/common';
 import { Request } from 'express';
@@ -25,19 +21,19 @@ export class AuthenticationController {
   @Get('redirect')
   @UseGuards(LocalAuthGuard)
   redirect(@Req() req: Request) {
-    console.log('-----GET app/auth/redirect');
+    //console.log('-----GET app/auth/redirect');
     return this.authService.provideCredentials(req.user);
   }
 
   @Get('status')
   status(@Req() req: Request) {
-    console.log('-----GET app/auth/status');
+    //console.log('-----GET app/auth/status');
     return req.user;
   }
 
   @Get('logout')
   logout(): string {
-    console.log('-----GET app/auth/logout');
+    //console.log('-----GET app/auth/logout');
     return 'logout...';
   }
 }
