@@ -7,16 +7,17 @@ import { ConfigService } from '@nestjs/config';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
+  app.enableCors();
   app.setGlobalPrefix('app');
   app.use(
     session({
       cookie: {
-        maxAge: 86400000,
+        maxAge: 1, //86400000,
       },
       secret: configService.get<any>('COOKIE'),
       resave: false,
       saveUninitialized: false,
-    })
+    }),
   );
   app.use(passport.initialize());
   app.use(passport.session());

@@ -17,13 +17,13 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
     });
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async validate(token: string, refresh: string): Promise<any> {
-    //console.log(token);
+    console.log('token = ', token);
     const sup = await superagent.get(
-      'https://api.intra.42.fr/v2/me?access_token=' + token,
+      `https://api.intra.42.fr/v2/me?access_token=${token}`,
     );
     const { login, email } = sup.body;
-    //console.log(login, email);
     const user = this.authenticationService.validateUser(login, email);
     if (!user) {
       throw new UnauthorizedException();

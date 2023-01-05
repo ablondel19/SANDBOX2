@@ -9,13 +9,6 @@ export class UsersService {
     @InjectRepository(User) private userRepository: Repository<User>,
   ) {}
 
-  async createOne() {
-    const U: User = new User();
-    U.login = 'ablondel';
-    U.email = 'ablondel@student.s19.be';
-    this.userRepository.save(U);
-  }
-
   async findOne(login: string): Promise<any> {
     return this.userRepository.findOneBy({ login });
   }
