@@ -12,10 +12,11 @@ export class AuthenticationService {
     @InjectRepository(User) private userRepository: Repository<User>,
   ) {}
 
-  async validateUser(username: string, email: string): Promise<any> {
-    const user = await this.userRepository.findOneBy({ email });
-    if (user && user.email === email) {
-      console.log('User validated');
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async validateUser(login: string, email: string): Promise<any> {
+    const user = await this.userRepository.findOneBy({ login });
+    console.log('validateUser(): ', user);
+    if (user && user.login === login) {
       return user;
     }
     return null;
@@ -34,12 +35,15 @@ export class AuthenticationService {
   }
 
   async signIn(user: User): Promise<any> {
-    const { email } = user;
-    const foundUser = await this.userRepository.findOneBy({ email });
+    console.log('signIn(user): ', user);
+    const { login } = user;
+    const foundUser = await this.userRepository.findOneBy({ login });
+    console.log('signIn(foundUser): ', foundUser);
     if (foundUser) {
       const { password } = foundUser;
       if (await bcrypt.compare(user.password, password)) {
         foundUser.isActive = true;
+        console.log('signIn(password check): ', true);
         return foundUser;
       }
       return new HttpException(

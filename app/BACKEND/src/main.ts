@@ -12,7 +12,7 @@ async function bootstrap() {
   app.use(
     session({
       cookie: {
-        maxAge: 1, //86400000,
+        maxAge: 86400000,
       },
       secret: configService.get<any>('COOKIE'),
       resave: false,

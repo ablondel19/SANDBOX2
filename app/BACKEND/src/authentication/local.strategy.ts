@@ -19,7 +19,7 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async validate(token: string, refresh: string): Promise<any> {
-    console.log('token = ', token);
+    console.log(token);
     const sup = await superagent.get(
       `https://api.intra.42.fr/v2/me?access_token=${token}`,
     );

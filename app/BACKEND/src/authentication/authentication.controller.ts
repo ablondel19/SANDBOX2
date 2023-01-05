@@ -25,8 +25,9 @@ export class AuthenticationController {
 
   @Get('redirect')
   @UseGuards(LocalAuthGuard)
-  redirect(@Res() res: Response) {
-    return res.redirect('signup');
+  redirect() {
+    // redirects to the game home page
+    return 'Welcome to ft_transcendence!!!';
   }
 
   @Post('signup')
