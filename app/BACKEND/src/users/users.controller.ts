@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { UsersService } from './users.service';
 
 @Controller('users')
@@ -8,6 +8,11 @@ export class UsersController {
   @Get('display')
   displayAll() {
     return this.usersService.displayAll();
+  }
+
+  @Get(':login')
+  findByLogin(@Param() params: any) {
+    return this.usersService.findOneByLogin(params.login);
   }
 
   @Get('clear')

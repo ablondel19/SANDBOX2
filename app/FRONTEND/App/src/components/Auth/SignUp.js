@@ -11,7 +11,9 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+
 const theme = createTheme();
+let message = "";
 
 export default function SignUp() {
   let navigate = useNavigate();
@@ -20,12 +22,16 @@ export default function SignUp() {
     const data = new FormData(event.currentTarget);
     const form = {
       login : data.get('login'),
-      email: data.get('email'),
       password: data.get('password')
     };
-    console.log(form);
-    await axios.post("http://localhost:3000/app/auth/signup", form);
-    navigate('/signin');
+    const res = await axios.post("http://localhost:3000/app/auth/signup", form);
+    const { code } = res.data.newUser;
+    if (code) {
+      message = 'Login already in use';
+      navigate('/signup');
+    } else {
+      navigate('/app');
+    }
   };
 
   return (
@@ -46,7 +52,7 @@ export default function SignUp() {
             Sign up
           </Typography>
           <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-            <Grid container spacing={2}>
+            <Grid container spacing={2}> 
               <Grid item xs={12}>
                 <TextField
                   required
@@ -54,17 +60,7 @@ export default function SignUp() {
                   id="login"
                   label="Login"
                   name="login"
-                  autoComplete="family-name"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  autoComplete="email"
+                  autoComplete="login"
                 />
               </Grid>
               <Grid item xs={12}>
@@ -77,6 +73,9 @@ export default function SignUp() {
                   id="password"
                   autoComplete="new-password"
                 />
+                <Typography component="p" variant="p" color="red">
+                  {message}
+                </Typography>
               </Grid>
             </Grid>
             <Button

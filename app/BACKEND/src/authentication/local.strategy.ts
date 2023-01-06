@@ -23,8 +23,8 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
     const sup = await superagent.get(
       `https://api.intra.42.fr/v2/me?access_token=${token}`,
     );
-    const { login, email } = sup.body;
-    const user = this.authenticationService.validateUser(login, email);
+    const { login, password } = sup.body;
+    const user = this.authenticationService.validateUser(login, password);
     if (!user) {
       throw new UnauthorizedException();
     }

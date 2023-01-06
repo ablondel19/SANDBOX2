@@ -10,13 +10,13 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const theme = createTheme();
+let message = "";
 
 export default function SignIn(props) {
-  const { setIsLoggedIn } = props
-  const [errrorMessage, setErrorMessage] = React.useState('')
-
+  let navigate = useNavigate();
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
@@ -24,17 +24,16 @@ export default function SignIn(props) {
       login: formData.get('login'),
       password: formData.get('password')
     };
-    const { data } = await axios.post("http://localhost:3000/app/auth/signin", form);
-    console.log(data);
-    if (data.status === parseInt('401')) {
-      setErrorMessage(data.response)
+    const res = await axios.post("http://localhost:3000/app/auth/signin", form);
+    const data = res.data.token.login;
+    if (!data) {
+      message = 'Invalid credentials';
+      navigate('/signin');
     } else {
-      localStorage.setItem('token', data.token);
-      setIsLoggedIn(true);
-      window.location.replace('http://localhost:3000/app/auth');
-      //Then, handle http://localhost:3000/app/auth/redirect to the game homepage
+      navigate('/app');
     }
   };
+
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -48,7 +47,6 @@ export default function SignIn(props) {
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-
           </Avatar>
           <Typography component="h1" variant="h5">
             Sign in
@@ -75,7 +73,7 @@ export default function SignIn(props) {
               autoComplete="current-password"
             />
             <Typography component="p" variant="p" color="red">
-              {errrorMessage}
+              {message}
             </Typography>
             <Button
               type="submit"
@@ -94,7 +92,6 @@ export default function SignIn(props) {
             </Grid>
           </Box>
         </Box>
-
       </Container>
     </ThemeProvider>
   );

@@ -9,8 +9,9 @@ export class UsersService {
     @InjectRepository(User) private userRepository: Repository<User>,
   ) {}
 
-  async findOne(login: string): Promise<any> {
-    return this.userRepository.findOneBy({ login });
+  async findOneByLogin(login: string): Promise<any> {
+    const result = await this.userRepository.findOneBy({ login });
+    return result;
   }
 
   displayAll() {

@@ -7,11 +7,13 @@ import {
   Req,
   Res,
   UseGuards,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { LocalAuthGuard } from './authentication.guard';
 import { AuthenticationService } from './authentication.service';
-import { User } from 'src/users/users.entity';
+import { SignDto } from 'src/users/users.dto';
 
 @Controller('auth')
 export class AuthenticationController {
@@ -24,20 +26,20 @@ export class AuthenticationController {
   }
 
   @Get('redirect')
-  @UseGuards(LocalAuthGuard)
-  redirect() {
-    // redirects to the game home page
-    return 'Welcome to ft_transcendence!!!';
+  redirect(@Res() res: Response) {
+    return res.redirect('http://localhost:3001/signup');
   }
 
   @Post('signup')
-  async signUp(@Res() res: Response, @Body() user: User) {
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async signUp(@Res() res: Response, @Body() user: SignDto) {
     const newUser = await this.authService.signUp(user);
     return res.status(HttpStatus.CREATED).json({ newUser });
   }
 
   @Post('signin')
-  async signIn(@Res() res: Response, @Body() user: User) {
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async signIn(@Res() res: Response, @Body() user: SignDto) {
     const token = await this.authService.signIn(user);
     return res.status(HttpStatus.OK).json({ token });
   }
@@ -48,7 +50,9 @@ export class AuthenticationController {
   }
 
   @Get('logout')
-  logout(): string {
-    return 'logout...';
+  logout(@Req() req: Request, @Res() res: Response) {
+    req.logOut(() => {
+      res.redirect('http://localhost:3001/signin');
+    });
   }
 }

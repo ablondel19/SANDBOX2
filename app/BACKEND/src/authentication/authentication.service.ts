@@ -4,6 +4,7 @@ import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { SignDto } from 'src/users/users.dto';
 
 @Injectable()
 export class AuthenticationService {
@@ -13,37 +14,40 @@ export class AuthenticationService {
   ) {}
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async validateUser(login: string, email: string): Promise<any> {
-    const user = await this.userRepository.findOneBy({ login });
-    console.log('validateUser(): ', user);
-    if (user && user.login === login) {
-      return user;
+  async validateUser(login: string, password: string): Promise<any> {
+    const foundUser = await this.userRepository.findOneBy({ login });
+    console.log('validateUser(): ', foundUser, login, password);
+    if (foundUser && foundUser.login === login) {
+      return foundUser;
     }
     return null;
   }
 
-  async signUp(user: User): Promise<User> {
+  async signUp(user: SignDto): Promise<any> {
     const salt = await bcrypt.genSalt();
     const hash = await bcrypt.hash(user.password, salt);
     const reqBody = {
       login: user.login,
-      email: user.email,
       password: hash,
+      isActive: true,
     };
-    const newUser = this.userRepository.save(reqBody);
+    const newUser = await this.userRepository.save(reqBody).catch((error) => {
+      return error;
+    });
     return newUser;
   }
 
-  async signIn(user: User): Promise<any> {
-    console.log('signIn(user): ', user);
+  async signIn(user: SignDto): Promise<any> {
     const { login } = user;
     const foundUser = await this.userRepository.findOneBy({ login });
-    console.log('signIn(foundUser): ', foundUser);
     if (foundUser) {
       const { password } = foundUser;
-      if (await bcrypt.compare(user.password, password)) {
-        foundUser.isActive = true;
-        console.log('signIn(password check): ', true);
+      const result = await bcrypt
+        .compare(user.password, password)
+        .catch((error) => {
+          return error;
+        });
+      if (result === true) {
         return foundUser;
       }
       return new HttpException(
